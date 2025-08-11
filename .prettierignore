@@ -39,5 +39,5 @@ yarn-error.log*
 next-env.d.ts
 
 # Content directories to ignore
-vault
-public
+CLAUDE.md
+.claude/
