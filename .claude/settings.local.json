@@ -17,7 +17,8 @@
       "Bash(pnpm add:*)",
       "Bash(npm install)",
       "Bash(npx prettier:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   }
