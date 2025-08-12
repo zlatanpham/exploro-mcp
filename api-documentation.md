@@ -63,6 +63,263 @@ Common error codes:
 
 ### Ingredients
 
+#### Get Ingredient Categories
+
+```
+GET /api/v1/ingredients/categories
+```
+
+Retrieve all available ingredient categories for classification.
+
+**Response:**
+
+```json
+{
+  "categories": [
+    {
+      "value": "vegetables",
+      "name_vi": "Rau củ",
+      "name_en": "Vegetables",
+      "description": "Fresh vegetables and leafy greens"
+    },
+    {
+      "value": "meat",
+      "name_vi": "Thịt",
+      "name_en": "Meat",
+      "description": "All types of meat including poultry"
+    },
+    {
+      "value": "seafood",
+      "name_vi": "Hải sản",
+      "name_en": "Seafood",
+      "description": "Fish, shellfish, and other seafood"
+    },
+    {
+      "value": "spices",
+      "name_vi": "Gia vị",
+      "name_en": "Spices & Seasonings",
+      "description": "Spices, herbs, and seasonings"
+    },
+    {
+      "value": "dairy",
+      "name_vi": "Sữa và sản phẩm từ sữa",
+      "name_en": "Dairy",
+      "description": "Milk and dairy products"
+    },
+    {
+      "value": "grains",
+      "name_vi": "Ngũ cốc",
+      "name_en": "Grains & Cereals",
+      "description": "Rice, noodles, and grain products"
+    },
+    {
+      "value": "fruits",
+      "name_vi": "Trái cây",
+      "name_en": "Fruits",
+      "description": "Fresh and dried fruits"
+    },
+    {
+      "value": "sauces",
+      "name_vi": "Nước mắm, nước chấm",
+      "name_en": "Sauces & Condiments",
+      "description": "Sauces, condiments, and dipping sauces"
+    },
+    {
+      "value": "other",
+      "name_vi": "Khác",
+      "name_en": "Other",
+      "description": "Other ingredients not fitting above categories"
+    }
+  ],
+  "total": 9
+}
+```
+
+**Example:**
+
+```bash
+curl -X GET "http://localhost:3000/api/v1/ingredients/categories" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+#### Get Ingredient Units
+
+```
+GET /api/v1/ingredients/units
+```
+
+Retrieve all available units for ingredient measurements with conversion factors.
+
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| category | string | No | Filter by unit category (mass, volume, count, bundle, cooking) |
+| grouped | boolean | No | Return units grouped by category |
+
+**Response:**
+
+```json
+{
+  "units": [
+    {
+      "value": "kg",
+      "name_vi": "Kilogram",
+      "name_en": "Kilogram",
+      "symbol": "kg",
+      "category": "mass",
+      "base_unit": true,
+      "factor_to_base": 1
+    },
+    {
+      "value": "g",
+      "name_vi": "Gram",
+      "name_en": "Gram",
+      "symbol": "g",
+      "category": "mass",
+      "base_unit": false,
+      "factor_to_base": 0.001
+    },
+    {
+      "value": "l",
+      "name_vi": "Lít",
+      "name_en": "Liter",
+      "symbol": "l",
+      "category": "volume",
+      "base_unit": true,
+      "factor_to_base": 1
+    },
+    {
+      "value": "ml",
+      "name_vi": "Mililít",
+      "name_en": "Milliliter",
+      "symbol": "ml",
+      "category": "volume",
+      "base_unit": false,
+      "factor_to_base": 0.001
+    },
+    {
+      "value": "cái",
+      "name_vi": "Cái",
+      "name_en": "Piece",
+      "symbol": "cái",
+      "category": "count",
+      "base_unit": true,
+      "factor_to_base": 1
+    },
+    {
+      "value": "bó",
+      "name_vi": "Bó",
+      "name_en": "Bunch",
+      "symbol": "bó",
+      "category": "bundle",
+      "base_unit": true,
+      "factor_to_base": 1
+    },
+    {
+      "value": "muỗng canh",
+      "name_vi": "Muỗng canh",
+      "name_en": "Tablespoon",
+      "symbol": "muỗng canh",
+      "category": "cooking",
+      "base_unit": false,
+      "factor_to_base": 0.015
+    }
+  ],
+  "total": 20
+}
+```
+
+**Example - Get grouped units:**
+
+```bash
+curl -X GET "http://localhost:3000/api/v1/ingredients/units?grouped=true" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+**Response (grouped):**
+
+```json
+{
+  "units": {
+    "mass": [
+      {
+        "value": "kg",
+        "name_vi": "Kilogram",
+        "name_en": "Kilogram",
+        "symbol": "kg",
+        "category": "mass",
+        "base_unit": true,
+        "factor_to_base": 1
+      },
+      {
+        "value": "g",
+        "name_vi": "Gram",
+        "name_en": "Gram",
+        "symbol": "g",
+        "category": "mass",
+        "base_unit": false,
+        "factor_to_base": 0.001
+      }
+    ],
+    "volume": [
+      {
+        "value": "l",
+        "name_vi": "Lít",
+        "name_en": "Liter",
+        "symbol": "l",
+        "category": "volume",
+        "base_unit": true,
+        "factor_to_base": 1
+      },
+      {
+        "value": "ml",
+        "name_vi": "Mililít",
+        "name_en": "Milliliter",
+        "symbol": "ml",
+        "category": "volume",
+        "base_unit": false,
+        "factor_to_base": 0.001
+      }
+    ],
+    "count": [
+      {
+        "value": "cái",
+        "name_vi": "Cái",
+        "name_en": "Piece",
+        "symbol": "cái",
+        "category": "count",
+        "base_unit": true,
+        "factor_to_base": 1
+      }
+    ],
+    "bundle": [
+      {
+        "value": "bó",
+        "name_vi": "Bó",
+        "name_en": "Bunch",
+        "symbol": "bó",
+        "category": "bundle",
+        "base_unit": true,
+        "factor_to_base": 1
+      }
+    ],
+    "cooking": [
+      {
+        "value": "muỗng canh",
+        "name_vi": "Muỗng canh",
+        "name_en": "Tablespoon",
+        "symbol": "muỗng canh",
+        "category": "cooking",
+        "base_unit": false,
+        "factor_to_base": 0.015
+      }
+    ]
+  },
+  "total": 20,
+  "categories": ["mass", "volume", "count", "bundle", "cooking"]
+}
+```
+
 #### List Ingredients
 
 ```
@@ -282,6 +539,96 @@ Create up to 50 ingredients in a single request.
 
 ### Dishes
 
+#### Get Dish Categories
+
+```
+GET /api/v1/dishes/categories
+```
+
+Retrieve all dish category options including difficulty levels, status options, and meal groups.
+
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| type | string | No | Get specific category type (difficulty, status, meal_groups) |
+
+**Response:**
+
+```json
+{
+  "categories": {
+    "difficulty": [
+      {
+        "value": "easy",
+        "name_vi": "Dễ",
+        "name_en": "Easy",
+        "description": "Simple dishes that can be prepared quickly with basic techniques"
+      },
+      {
+        "value": "medium",
+        "name_vi": "Trung bình",
+        "name_en": "Medium",
+        "description": "Dishes requiring moderate skill and preparation time"
+      },
+      {
+        "value": "hard",
+        "name_vi": "Khó",
+        "name_en": "Hard",
+        "description": "Complex dishes requiring advanced techniques and longer preparation"
+      }
+    ],
+    "status": [
+      {
+        "value": "active",
+        "name_vi": "Đang sử dụng",
+        "name_en": "Active",
+        "description": "Dish is currently available and in use"
+      },
+      {
+        "value": "inactive",
+        "name_vi": "Không sử dụng",
+        "name_en": "Inactive",
+        "description": "Dish is archived or not currently available"
+      }
+    ],
+    "meal_groups": [
+      {
+        "value": "breakfast",
+        "name_vi": "Bữa sáng",
+        "name_en": "Breakfast",
+        "description": "Morning meal dishes"
+      },
+      {
+        "value": "lunch",
+        "name_vi": "Bữa trưa",
+        "name_en": "Lunch",
+        "description": "Midday meal dishes"
+      },
+      {
+        "value": "dinner",
+        "name_vi": "Bữa tối",
+        "name_en": "Dinner",
+        "description": "Evening meal dishes"
+      },
+      {
+        "value": "snack",
+        "name_vi": "Ăn vặt",
+        "name_en": "Snack",
+        "description": "Light dishes or appetizers"
+      }
+    ]
+  },
+  "types": ["difficulty", "status", "meal_groups"]
+}
+```
+
+**Example - Get only difficulty levels:**
+
+```bash
+curl -X GET "http://localhost:3000/api/v1/dishes/categories?type=difficulty" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
 #### List Dishes
 
 ```
@@ -445,6 +792,133 @@ Create up to 20 dishes in a single request.
 ```
 
 ### Tags
+
+#### Get Tag Categories
+
+```
+GET /api/v1/tags/categories
+```
+
+Retrieve all available tag categories for dish classification.
+
+**Response:**
+
+```json
+{
+  "categories": [
+    {
+      "value": "cooking_method",
+      "name_vi": "Phương pháp nấu",
+      "name_en": "Cooking Method",
+      "description": "How the dish is prepared or cooked",
+      "examples": [
+        "Món chiên (Fried)",
+        "Món xào (Stir-fried)",
+        "Món nướng (Grilled)",
+        "Món hấp (Steamed)",
+        "Món luộc (Boiled)"
+      ]
+    },
+    {
+      "value": "meal_type",
+      "name_vi": "Loại bữa ăn",
+      "name_en": "Meal Type",
+      "description": "Type of meal or course",
+      "examples": [
+        "Món chính (Main dish)",
+        "Món phụ (Side dish)",
+        "Món khai vị (Appetizer)",
+        "Món tráng miệng (Dessert)",
+        "Món canh (Soup)"
+      ]
+    },
+    {
+      "value": "cuisine",
+      "name_vi": "Ẩm thực vùng miền",
+      "name_en": "Cuisine",
+      "description": "Regional or cultural cuisine style",
+      "examples": [
+        "Miền Bắc (Northern)",
+        "Miền Trung (Central)",
+        "Miền Nam (Southern)",
+        "Ẩm thực Huế (Hue cuisine)",
+        "Món Hà Nội (Hanoi dishes)"
+      ]
+    },
+    {
+      "value": "dietary",
+      "name_vi": "Chế độ ăn",
+      "name_en": "Dietary",
+      "description": "Dietary restrictions or preferences",
+      "examples": [
+        "Món chay (Vegetarian)",
+        "Thuần chay (Vegan)",
+        "Không gluten (Gluten-free)",
+        "Ít béo (Low-fat)",
+        "Ít đường (Low-sugar)"
+      ]
+    },
+    {
+      "value": "occasion",
+      "name_vi": "Dịp lễ",
+      "name_en": "Occasion",
+      "description": "Special occasions or holidays",
+      "examples": [
+        "Tết (Lunar New Year)",
+        "Giỗ tổ (Ancestor worship)",
+        "Cưới hỏi (Wedding)",
+        "Sinh nhật (Birthday)",
+        "Lễ hội (Festival)"
+      ]
+    },
+    {
+      "value": "flavor",
+      "name_vi": "Hương vị",
+      "name_en": "Flavor",
+      "description": "Dominant flavor profile",
+      "examples": [
+        "Cay (Spicy)",
+        "Ngọt (Sweet)",
+        "Chua (Sour)",
+        "Mặn (Salty)",
+        "Đắng (Bitter)",
+        "Umami"
+      ]
+    },
+    {
+      "value": "temperature",
+      "name_vi": "Nhiệt độ",
+      "name_en": "Temperature",
+      "description": "Serving temperature",
+      "examples": [
+        "Món nóng (Hot dish)",
+        "Món nguội (Cold dish)",
+        "Món ấm (Warm dish)"
+      ]
+    },
+    {
+      "value": "texture",
+      "name_vi": "Kết cấu",
+      "name_en": "Texture",
+      "description": "Primary texture of the dish",
+      "examples": [
+        "Giòn (Crispy)",
+        "Mềm (Soft)",
+        "Dai (Chewy)",
+        "Béo ngậy (Rich/Creamy)"
+      ]
+    }
+  ],
+  "total": 8
+}
+```
+
+**Example:**
+
+```bash
+curl -X GET "http://localhost:3000/api/v1/tags/categories" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
 
 #### List Tags
 
@@ -769,7 +1243,7 @@ class ExploroAPI {
 
 // Usage
 const api = new ExploroAPI('YOUR_API_KEY');
-const ingredients = await api.listIngredients({ category: 'vegetable' });
+const ingredients = await api.listIngredients({ category: 'vegetables' });
 ```
 
 ## Support

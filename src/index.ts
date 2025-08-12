@@ -72,7 +72,59 @@ async function exploroApiRequest(
   return data;
 }
 
-// 1. List Ingredients Tool
+// 1. Get Ingredient Categories Tool
+server.addTool({
+  description: 'Get all available ingredient categories for classification',
+  execute: async () => {
+    try {
+      const data = await exploroApiRequest(
+        'GET',
+        '/api/v1/ingredients/categories',
+      );
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'getIngredientCategories',
+  parameters: z.object({}),
+});
+
+// 2. Get Ingredient Units Tool
+server.addTool({
+  description:
+    'Get all available units for ingredient measurements with conversion factors',
+  execute: async args => {
+    try {
+      const queryParams: Record<string, boolean | string> = {};
+      if (args.category !== undefined) queryParams.category = args.category;
+      if (args.grouped !== undefined) queryParams.grouped = args.grouped;
+
+      const data = await exploroApiRequest(
+        'GET',
+        '/api/v1/ingredients/units',
+        undefined,
+        queryParams,
+      );
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'getIngredientUnits',
+  parameters: z.object({
+    category: z
+      .enum(['mass', 'volume', 'count', 'bundle', 'cooking'])
+      .optional()
+      .describe('Filter by unit category'),
+    grouped: z
+      .boolean()
+      .optional()
+      .describe('Return units grouped by category'),
+  }),
+});
+
+// 3. List Ingredients Tool
 server.addTool({
   description: 'List all ingredients with optional filtering and pagination',
   execute: async args => {
@@ -124,7 +176,7 @@ server.addTool({
   }),
 });
 
-// 2. Create Ingredient Tool
+// 4. Create Ingredient Tool
 server.addTool({
   description: 'Create a new ingredient with automatic duplicate detection',
   execute: async args => {
@@ -173,7 +225,7 @@ server.addTool({
   }),
 });
 
-// 3. Get Single Ingredient Tool
+// 5. Get Single Ingredient Tool
 server.addTool({
   description: 'Get a single ingredient with price history',
   execute: async args => {
@@ -193,7 +245,7 @@ server.addTool({
   }),
 });
 
-// 4. Update Ingredient Tool
+// 6. Update Ingredient Tool
 server.addTool({
   description:
     'Update ingredient details with automatic price history tracking',
@@ -258,7 +310,7 @@ server.addTool({
   }),
 });
 
-// 5. Delete Ingredient Tool
+// 7. Delete Ingredient Tool
 server.addTool({
   description: 'Delete an ingredient (requires admin permission)',
   execute: async args => {
@@ -278,7 +330,7 @@ server.addTool({
   }),
 });
 
-// 6. Batch Create Ingredients Tool
+// 8. Batch Create Ingredients Tool
 server.addTool({
   description: 'Create up to 50 ingredients in a single request',
   execute: async args => {
@@ -336,7 +388,36 @@ server.addTool({
 
 // Dishes Management Tools
 
-// 7. List Dishes Tool
+// 9. Get Dish Categories Tool
+server.addTool({
+  description:
+    'Get all dish category options including difficulty levels, status options, and meal groups',
+  execute: async args => {
+    try {
+      const queryParams: Record<string, string> = {};
+      if (args.type !== undefined) queryParams.type = args.type;
+
+      const data = await exploroApiRequest(
+        'GET',
+        '/api/v1/dishes/categories',
+        undefined,
+        queryParams,
+      );
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'getDishCategories',
+  parameters: z.object({
+    type: z
+      .enum(['difficulty', 'status', 'meal_groups'])
+      .optional()
+      .describe('Get specific category type'),
+  }),
+});
+
+// 10. List Dishes Tool
 server.addTool({
   description: 'List all dishes with optional filtering and pagination',
   execute: async args => {
@@ -396,7 +477,7 @@ server.addTool({
   }),
 });
 
-// 8. Create Dish Tool
+// 11. Create Dish Tool
 server.addTool({
   description: 'Create a new dish with ingredient associations and tags',
   execute: async args => {
@@ -465,7 +546,7 @@ server.addTool({
   }),
 });
 
-// 9. Get Single Dish Tool
+// 12. Get Single Dish Tool
 server.addTool({
   description:
     'Get a single dish with full details including ingredients and tags',
@@ -483,7 +564,7 @@ server.addTool({
   }),
 });
 
-// 10. Batch Create Dishes Tool
+// 13. Batch Create Dishes Tool
 server.addTool({
   description: 'Create up to 20 dishes in a single request',
   execute: async args => {
@@ -566,7 +647,22 @@ server.addTool({
 
 // Tags Management Tools
 
-// 11. List Tags Tool
+// 14. Get Tag Categories Tool
+server.addTool({
+  description: 'Get all available tag categories for dish classification',
+  execute: async () => {
+    try {
+      const data = await exploroApiRequest('GET', '/api/v1/tags/categories');
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'getTagCategories',
+  parameters: z.object({}),
+});
+
+// 15. List Tags Tool
 server.addTool({
   description: 'List all available tags with usage count',
   execute: async args => {
@@ -595,13 +691,15 @@ server.addTool({
         'dietary',
         'occasion',
         'flavor',
+        'temperature',
+        'texture',
       ])
       .optional()
       .describe('Filter by tag category'),
   }),
 });
 
-// 12. Create Tag Tool
+// 16. Create Tag Tool
 server.addTool({
   description: 'Create a new tag',
   execute: async args => {
@@ -628,6 +726,8 @@ server.addTool({
         'dietary',
         'occasion',
         'flavor',
+        'temperature',
+        'texture',
       ])
       .optional()
       .describe('Tag category'),
@@ -638,7 +738,7 @@ server.addTool({
 
 // Menus Management Tools
 
-// 13. List Menus Tool
+// 17. List Menus Tool
 server.addTool({
   description: 'List menus with cost calculation and optional filtering',
   execute: async args => {
@@ -685,7 +785,7 @@ server.addTool({
   }),
 });
 
-// 14. Create Menu Tool
+// 18. Create Menu Tool
 server.addTool({
   description: 'Create a new menu with dish associations',
   execute: async args => {
@@ -751,7 +851,7 @@ server.addTool({
   }),
 });
 
-// 15. Get Single Menu Tool
+// 19. Get Single Menu Tool
 server.addTool({
   description:
     'Get a single menu with full details including dishes and cost calculation',

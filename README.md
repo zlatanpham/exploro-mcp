@@ -14,32 +14,36 @@ An MCP (Model Context Protocol) server that provides tools for interacting with 
 
 ## Available Tools
 
-### Ingredients (6 tools)
+### Ingredients (8 tools)
 
-1. **listIngredients** - List ingredients with filtering and pagination
-2. **createIngredient** - Create new ingredient with duplicate detection
-3. **getIngredient** - Get single ingredient with price history
-4. **updateIngredient** - Update ingredient with automatic price tracking
-5. **deleteIngredient** - Delete ingredient (admin only)
-6. **batchCreateIngredients** - Create up to 50 ingredients in one request
+1. **getIngredientCategories** - Get all available ingredient categories
+2. **getIngredientUnits** - Get units with conversion factors and grouping
+3. **listIngredients** - List ingredients with filtering and pagination
+4. **createIngredient** - Create new ingredient with duplicate detection
+5. **getIngredient** - Get single ingredient with price history
+6. **updateIngredient** - Update ingredient with automatic price tracking
+7. **deleteIngredient** - Delete ingredient (admin only)
+8. **batchCreateIngredients** - Create up to 50 ingredients in one request
 
-### Dishes (4 tools)
+### Dishes (5 tools)
 
-7. **listDishes** - List dishes with filtering by status, difficulty, tags, etc.
-8. **createDish** - Create dish with ingredients, tags, and instructions
-9. **getDish** - Get single dish with full details
-10. **batchCreateDishes** - Create up to 20 dishes in one request
+9. **getDishCategories** - Get dish categories including difficulty and meal groups
+10. **listDishes** - List dishes with filtering by status, difficulty, tags, etc.
+11. **createDish** - Create dish with ingredients, tags, and instructions
+12. **getDish** - Get single dish with full details
+13. **batchCreateDishes** - Create up to 20 dishes in one request
 
-### Tags (2 tools)
+### Tags (3 tools)
 
-11. **listTags** - List all tags with usage counts
-12. **createTag** - Create new tags for dish categorization
+14. **getTagCategories** - Get all available tag categories for classification
+15. **listTags** - List all tags with usage counts
+16. **createTag** - Create new tags for dish categorization
 
 ### Menus (3 tools)
 
-13. **listMenus** - List menus with cost calculations and filtering
-14. **createMenu** - Create menu with dish associations
-15. **getMenu** - Get single menu with full details and costs
+17. **listMenus** - List menus with cost calculations and filtering
+18. **createMenu** - Create menu with dish associations
+19. **getMenu** - Get single menu with full details and costs
 
 ## Installation
 
@@ -146,7 +150,7 @@ Each tool makes direct HTTP requests to the Exploro API and returns structured r
 
 ### Tag Categories
 
-`cooking_method`, `meal_type`, `cuisine`, `dietary`, `occasion`, `flavor`
+`cooking_method`, `meal_type`, `cuisine`, `dietary`, `occasion`, `flavor`, `temperature`, `texture`
 
 ### Meal Groups
 
