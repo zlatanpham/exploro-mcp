@@ -86,7 +86,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'getIngredientCategories',
+  name: 'get_ingredient_categories',
   parameters: z.object({}),
 });
 
@@ -111,7 +111,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'getIngredientUnits',
+  name: 'get_ingredient_units',
   parameters: z.object({
     category: z
       .enum(['mass', 'volume', 'count', 'bundle', 'cooking'])
@@ -147,7 +147,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'listIngredients',
+  name: 'list_ingredients',
   parameters: z.object({
     category: z
       .enum([
@@ -196,7 +196,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'createIngredient',
+  name: 'create_ingredient',
   parameters: z.object({
     category: z
       .enum([
@@ -239,7 +239,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'getIngredient',
+  name: 'get_ingredient',
   parameters: z.object({
     id: z.string().describe('ID of the ingredient to retrieve'),
   }),
@@ -272,7 +272,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'updateIngredient',
+  name: 'update_ingredient',
   parameters: z.object({
     category: z
       .enum([
@@ -324,7 +324,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'deleteIngredient',
+  name: 'delete_ingredient',
   parameters: z.object({
     id: z.string().describe('ID of the ingredient to delete'),
   }),
@@ -347,7 +347,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'batchCreateIngredients',
+  name: 'batch_create_ingredients',
   parameters: z.object({
     ingredients: z
       .array(
@@ -408,7 +408,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'getDishCategories',
+  name: 'get_dish_categories',
   parameters: z.object({
     type: z
       .enum(['difficulty', 'status', 'meal_groups'])
@@ -449,7 +449,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'listDishes',
+  name: 'list_dishes',
   parameters: z.object({
     difficulty: z
       .string()
@@ -506,7 +506,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'createDish',
+  name: 'create_dish',
   parameters: z.object({
     cook_time: z.number().positive().describe('Cooking time in minutes'),
     description_en: z
@@ -558,7 +558,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'getDish',
+  name: 'get_dish',
   parameters: z.object({
     id: z.string().describe('ID of the dish to retrieve'),
   }),
@@ -577,7 +577,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'batchCreateDishes',
+  name: 'batch_create_dishes',
   parameters: z.object({
     dishes: z
       .array(
@@ -658,7 +658,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'getTagCategories',
+  name: 'get_tag_categories',
   parameters: z.object({}),
 });
 
@@ -681,7 +681,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'listTags',
+  name: 'list_tags',
   parameters: z.object({
     category: z
       .enum([
@@ -716,7 +716,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'createTag',
+  name: 'create_tag',
   parameters: z.object({
     category: z
       .enum([
@@ -763,7 +763,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'listMenus',
+  name: 'list_menus',
   parameters: z.object({
     end_date: z
       .string()
@@ -806,7 +806,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'createMenu',
+  name: 'create_menu',
   parameters: z.object({
     description: z.string().optional().describe('Description of the menu'),
     dishes: z
@@ -863,7 +863,7 @@ server.addTool({
       return `Error: ${error instanceof Error ? error.message : String(error)}`;
     }
   },
-  name: 'getMenu',
+  name: 'get_menu',
   parameters: z.object({
     id: z.string().describe('ID of the menu to retrieve'),
   }),
