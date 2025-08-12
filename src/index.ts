@@ -181,15 +181,31 @@ server.addTool({
   description: 'Create a new ingredient with automatic duplicate detection',
   execute: async args => {
     try {
+      const ingredientData: Record<string, unknown> = {
+        current_price: args.current_price,
+        name_vi: args.name_vi,
+        seasonal_flag: args.seasonal_flag || false,
+      };
+
+      // Add optional fields
+      if (args.name_en !== undefined) ingredientData.name_en = args.name_en;
+      if (args.density !== undefined) ingredientData.density = args.density;
+
+      // Handle legacy and new category/unit fields
+      if (args.category_id !== undefined) {
+        ingredientData.category_id = args.category_id;
+      } else if (args.category !== undefined) {
+        ingredientData.category = args.category;
+      }
+
+      if (args.unit_id !== undefined) {
+        ingredientData.unit_id = args.unit_id;
+      } else if (args.default_unit !== undefined) {
+        ingredientData.default_unit = args.default_unit;
+      }
+
       const data = await exploroApiRequest('POST', '/api/v1/ingredients', {
-        ingredient: {
-          category: args.category,
-          current_price: args.current_price,
-          default_unit: args.default_unit,
-          name_en: args.name_en,
-          name_vi: args.name_vi,
-          seasonal_flag: args.seasonal_flag || false,
-        },
+        ingredient: ingredientData,
       });
       return JSON.stringify(data, null, 2);
     } catch (error) {
@@ -210,18 +226,33 @@ server.addTool({
         'sauces',
         'other',
       ])
-      .describe('Ingredient category'),
+      .optional()
+      .describe('Ingredient category (legacy - use category_id instead)'),
+    category_id: z
+      .string()
+      .optional()
+      .describe('Foreign key to ingredient category'),
     current_price: z
       .number()
       .positive()
       .describe('Current price of the ingredient'),
-    default_unit: z.string().describe('Default unit for the ingredient'),
+    default_unit: z
+      .string()
+      .optional()
+      .describe(
+        'Default unit for the ingredient (legacy - use unit_id instead)',
+      ),
+    density: z
+      .number()
+      .optional()
+      .describe('Density in g/ml for mass-volume conversion'),
     name_en: z.string().optional().describe('English name of the ingredient'),
     name_vi: z.string().describe('Vietnamese name of the ingredient'),
     seasonal_flag: z
       .boolean()
       .optional()
       .describe('Whether the ingredient is seasonal'),
+    unit_id: z.string().optional().describe('Foreign key to unit'),
   }),
 });
 
@@ -364,12 +395,26 @@ server.addTool({
               'sauces',
               'other',
             ])
-            .describe('Ingredient category'),
+            .optional()
+            .describe('Ingredient category (legacy - use category_id instead)'),
+          category_id: z
+            .string()
+            .optional()
+            .describe('Foreign key to ingredient category'),
           current_price: z
             .number()
             .positive()
             .describe('Current price of the ingredient'),
-          default_unit: z.string().describe('Default unit for the ingredient'),
+          default_unit: z
+            .string()
+            .optional()
+            .describe(
+              'Default unit for the ingredient (legacy - use unit_id instead)',
+            ),
+          density: z
+            .number()
+            .optional()
+            .describe('Density in g/ml for mass-volume conversion'),
           name_en: z
             .string()
             .optional()
@@ -379,6 +424,7 @@ server.addTool({
             .boolean()
             .optional()
             .describe('Whether the ingredient is seasonal'),
+          unit_id: z.string().optional().describe('Foreign key to unit'),
         }),
       )
       .max(50)
@@ -564,7 +610,122 @@ server.addTool({
   }),
 });
 
-// 13. Batch Create Dishes Tool
+// 13. Update Dish Tool
+server.addTool({
+  description: 'Update dish details with ingredient associations and tags',
+  execute: async args => {
+    try {
+      const updateData: Record<string, unknown> = {};
+      if (args.name_vi !== undefined) updateData.name_vi = args.name_vi;
+      if (args.name_en !== undefined) updateData.name_en = args.name_en;
+      if (args.description_vi !== undefined)
+        updateData.description_vi = args.description_vi;
+      if (args.description_en !== undefined)
+        updateData.description_en = args.description_en;
+      if (args.instructions_vi !== undefined)
+        updateData.instructions_vi = args.instructions_vi;
+      if (args.instructions_en !== undefined)
+        updateData.instructions_en = args.instructions_en;
+      if (args.difficulty !== undefined)
+        updateData.difficulty = args.difficulty;
+      if (args.cook_time !== undefined) updateData.cook_time = args.cook_time;
+      if (args.prep_time !== undefined) updateData.prep_time = args.prep_time;
+      if (args.servings !== undefined) updateData.servings = args.servings;
+      if (args.image_url !== undefined) updateData.image_url = args.image_url;
+      if (args.source_url !== undefined)
+        updateData.source_url = args.source_url;
+      if (args.status !== undefined) updateData.status = args.status;
+
+      const requestBody: Record<string, unknown> = { dish: updateData };
+      if (args.ingredients !== undefined)
+        requestBody.ingredients = args.ingredients;
+      if (args.tags !== undefined) requestBody.tags = args.tags;
+
+      const data = await exploroApiRequest(
+        'PUT',
+        `/api/v1/dishes/${args.id}`,
+        requestBody,
+      );
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'update_dish',
+  parameters: z.object({
+    cook_time: z
+      .number()
+      .positive()
+      .optional()
+      .describe('Cooking time in minutes'),
+    description_en: z
+      .string()
+      .optional()
+      .describe('English description of the dish'),
+    description_vi: z
+      .string()
+      .optional()
+      .describe('Vietnamese description of the dish'),
+    difficulty: z
+      .enum(['easy', 'medium', 'hard'])
+      .optional()
+      .describe('Difficulty level'),
+    id: z.string().describe('ID of the dish to update'),
+    image_url: z.string().url().optional().describe('Image URL'),
+    ingredients: z
+      .array(
+        z.object({
+          ingredient_id: z.string().describe('ID of the ingredient'),
+          notes: z.string().optional().describe('Additional notes'),
+          optional: z
+            .boolean()
+            .optional()
+            .describe('Whether ingredient is optional'),
+          quantity: z.number().positive().describe('Quantity needed'),
+          unit: z.string().describe('Unit of measurement'),
+        }),
+      )
+      .optional()
+      .describe('Array of ingredients for the dish'),
+    instructions_en: z
+      .string()
+      .optional()
+      .describe('English cooking instructions'),
+    instructions_vi: z
+      .string()
+      .optional()
+      .describe('Vietnamese cooking instructions'),
+    name_en: z.string().optional().describe('English name of the dish'),
+    name_vi: z.string().optional().describe('Vietnamese name of the dish'),
+    prep_time: z.number().optional().describe('Preparation time in minutes'),
+    servings: z.number().positive().optional().describe('Number of servings'),
+    source_url: z.string().url().optional().describe('Recipe source URL'),
+    status: z.enum(['active', 'inactive']).optional().describe('Dish status'),
+    tags: z.array(z.string()).optional().describe('Array of tag IDs'),
+  }),
+});
+
+// 14. Delete Dish Tool
+server.addTool({
+  description: 'Delete a dish (requires admin permission)',
+  execute: async args => {
+    try {
+      const data = await exploroApiRequest(
+        'DELETE',
+        `/api/v1/dishes/${args.id}`,
+      );
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'delete_dish',
+  parameters: z.object({
+    id: z.string().describe('ID of the dish to delete'),
+  }),
+});
+
+// 15. Batch Create Dishes Tool
 server.addTool({
   description: 'Create up to 20 dishes in a single request',
   execute: async args => {
@@ -647,7 +808,7 @@ server.addTool({
 
 // Tags Management Tools
 
-// 14. Get Tag Categories Tool
+// 16. Get Tag Categories Tool
 server.addTool({
   description: 'Get all available tag categories for dish classification',
   execute: async () => {
@@ -662,7 +823,7 @@ server.addTool({
   parameters: z.object({}),
 });
 
-// 15. List Tags Tool
+// 17. List Tags Tool
 server.addTool({
   description: 'List all available tags with usage count',
   execute: async args => {
@@ -699,7 +860,7 @@ server.addTool({
   }),
 });
 
-// 16. Create Tag Tool
+// 18. Create Tag Tool
 server.addTool({
   description: 'Create a new tag',
   execute: async args => {
@@ -738,7 +899,7 @@ server.addTool({
 
 // Menus Management Tools
 
-// 17. List Menus Tool
+// 19. List Menus Tool
 server.addTool({
   description: 'List menus with cost calculation and optional filtering',
   execute: async args => {
@@ -785,7 +946,7 @@ server.addTool({
   }),
 });
 
-// 18. Create Menu Tool
+// 20. Create Menu Tool
 server.addTool({
   description: 'Create a new menu with dish associations',
   execute: async args => {
@@ -851,7 +1012,7 @@ server.addTool({
   }),
 });
 
-// 19. Get Single Menu Tool
+// 21. Get Single Menu Tool
 server.addTool({
   description:
     'Get a single menu with full details including dishes and cost calculation',
