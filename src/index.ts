@@ -854,8 +854,6 @@ server.addTool({
         'flavor',
         'temperature',
         'texture',
-        'temperature',
-        'texture',
       ])
       .optional()
       .describe('Filter by tag category'),
@@ -889,8 +887,6 @@ server.addTool({
         'dietary',
         'occasion',
         'flavor',
-        'temperature',
-        'texture',
         'temperature',
         'texture',
       ])

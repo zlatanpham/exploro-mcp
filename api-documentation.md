@@ -189,6 +189,7 @@ Retrieve all available units for ingredient measurements with conversion factors
 {
   "units": [
     {
+      "id": "kg",
       "value": "kg",
       "name_vi": "Kilogram",
       "name_en": "Kilogram",
@@ -198,6 +199,7 @@ Retrieve all available units for ingredient measurements with conversion factors
       "factor_to_base": 1
     },
     {
+      "id": "g",
       "value": "g",
       "name_vi": "Gram",
       "name_en": "Gram",
@@ -207,6 +209,7 @@ Retrieve all available units for ingredient measurements with conversion factors
       "factor_to_base": 0.001
     },
     {
+      "id": "l",
       "value": "l",
       "name_vi": "Lít",
       "name_en": "Liter",
@@ -216,6 +219,7 @@ Retrieve all available units for ingredient measurements with conversion factors
       "factor_to_base": 1
     },
     {
+      "id": "ml",
       "value": "ml",
       "name_vi": "Mililít",
       "name_en": "Milliliter",
@@ -225,6 +229,7 @@ Retrieve all available units for ingredient measurements with conversion factors
       "factor_to_base": 0.001
     },
     {
+      "id": "cai",
       "value": "cái",
       "name_vi": "Cái",
       "name_en": "Piece",
@@ -234,6 +239,7 @@ Retrieve all available units for ingredient measurements with conversion factors
       "factor_to_base": 1
     },
     {
+      "id": "bo",
       "value": "bó",
       "name_vi": "Bó",
       "name_en": "Bunch",
@@ -243,6 +249,7 @@ Retrieve all available units for ingredient measurements with conversion factors
       "factor_to_base": 1
     },
     {
+      "id": "muong_canh",
       "value": "muỗng canh",
       "name_vi": "Muỗng canh",
       "name_en": "Tablespoon",
@@ -270,6 +277,7 @@ curl -X GET "http://localhost:3000/api/v1/ingredients/units?grouped=true" \
   "units": {
     "mass": [
       {
+        "id": "kg",
         "value": "kg",
         "name_vi": "Kilogram",
         "name_en": "Kilogram",
@@ -279,6 +287,7 @@ curl -X GET "http://localhost:3000/api/v1/ingredients/units?grouped=true" \
         "factor_to_base": 1
       },
       {
+        "id": "g",
         "value": "g",
         "name_vi": "Gram",
         "name_en": "Gram",
@@ -290,6 +299,7 @@ curl -X GET "http://localhost:3000/api/v1/ingredients/units?grouped=true" \
     ],
     "volume": [
       {
+        "id": "l",
         "value": "l",
         "name_vi": "Lít",
         "name_en": "Liter",
@@ -299,6 +309,7 @@ curl -X GET "http://localhost:3000/api/v1/ingredients/units?grouped=true" \
         "factor_to_base": 1
       },
       {
+        "id": "ml",
         "value": "ml",
         "name_vi": "Mililít",
         "name_en": "Milliliter",
@@ -310,6 +321,7 @@ curl -X GET "http://localhost:3000/api/v1/ingredients/units?grouped=true" \
     ],
     "count": [
       {
+        "id": "cai",
         "value": "cái",
         "name_vi": "Cái",
         "name_en": "Piece",
@@ -321,6 +333,7 @@ curl -X GET "http://localhost:3000/api/v1/ingredients/units?grouped=true" \
     ],
     "bundle": [
       {
+        "id": "bo",
         "value": "bó",
         "name_vi": "Bó",
         "name_en": "Bunch",
@@ -332,6 +345,7 @@ curl -X GET "http://localhost:3000/api/v1/ingredients/units?grouped=true" \
     ],
     "cooking": [
       {
+        "id": "muong_canh",
         "value": "muỗng canh",
         "name_vi": "Muỗng canh",
         "name_en": "Tablespoon",
@@ -847,6 +861,7 @@ Retrieve all available tag categories for dish classification.
 {
   "categories": [
     {
+      "id": "cooking_method",
       "value": "cooking_method",
       "name_vi": "Phương pháp nấu",
       "name_en": "Cooking Method",
@@ -860,6 +875,7 @@ Retrieve all available tag categories for dish classification.
       ]
     },
     {
+      "id": "meal_type",
       "value": "meal_type",
       "name_vi": "Loại bữa ăn",
       "name_en": "Meal Type",
@@ -873,6 +889,7 @@ Retrieve all available tag categories for dish classification.
       ]
     },
     {
+      "id": "cuisine",
       "value": "cuisine",
       "name_vi": "Ẩm thực vùng miền",
       "name_en": "Cuisine",
@@ -886,6 +903,7 @@ Retrieve all available tag categories for dish classification.
       ]
     },
     {
+      "id": "dietary",
       "value": "dietary",
       "name_vi": "Chế độ ăn",
       "name_en": "Dietary",
@@ -899,6 +917,7 @@ Retrieve all available tag categories for dish classification.
       ]
     },
     {
+      "id": "occasion",
       "value": "occasion",
       "name_vi": "Dịp lễ",
       "name_en": "Occasion",
@@ -912,6 +931,7 @@ Retrieve all available tag categories for dish classification.
       ]
     },
     {
+      "id": "flavor",
       "value": "flavor",
       "name_vi": "Hương vị",
       "name_en": "Flavor",
@@ -926,6 +946,7 @@ Retrieve all available tag categories for dish classification.
       ]
     },
     {
+      "id": "temperature",
       "value": "temperature",
       "name_vi": "Nhiệt độ",
       "name_en": "Temperature",
@@ -937,6 +958,7 @@ Retrieve all available tag categories for dish classification.
       ]
     },
     {
+      "id": "texture",
       "value": "texture",
       "name_vi": "Kết cấu",
       "name_en": "Texture",
