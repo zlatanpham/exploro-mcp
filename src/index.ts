@@ -572,7 +572,7 @@ server.addTool({
             .optional()
             .describe('Whether ingredient is optional'),
           quantity: z.number().positive().describe('Quantity needed'),
-          unit: z.string().describe('Unit of measurement'),
+          unit_id: z.string().describe('Foreign key to unit'),
         }),
       )
       .optional()
@@ -682,7 +682,7 @@ server.addTool({
             .optional()
             .describe('Whether ingredient is optional'),
           quantity: z.number().positive().describe('Quantity needed'),
-          unit: z.string().describe('Unit of measurement'),
+          unit_id: z.string().describe('Foreign key to unit'),
         }),
       )
       .optional()
@@ -793,7 +793,7 @@ server.addTool({
                   .optional()
                   .describe('Whether ingredient is optional'),
                 quantity: z.number().positive().describe('Quantity needed'),
-                unit: z.string().describe('Unit of measurement'),
+                unit_id: z.string().describe('Foreign key to unit'),
               }),
             )
             .optional()
@@ -854,6 +854,8 @@ server.addTool({
         'flavor',
         'temperature',
         'texture',
+        'temperature',
+        'texture',
       ])
       .optional()
       .describe('Filter by tag category'),
@@ -887,6 +889,8 @@ server.addTool({
         'dietary',
         'occasion',
         'flavor',
+        'temperature',
+        'texture',
         'temperature',
         'texture',
       ])
