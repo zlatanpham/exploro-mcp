@@ -198,10 +198,14 @@ server.addTool({
         ingredientData.category = args.category;
       }
 
+      // unit_id is now required
       if (args.unit_id !== undefined) {
         ingredientData.unit_id = args.unit_id;
       } else if (args.default_unit !== undefined) {
+        // Fallback to legacy field for backward compatibility
         ingredientData.default_unit = args.default_unit;
+      } else {
+        throw new Error('unit_id is required for ingredient creation');
       }
 
       const data = await exploroApiRequest('POST', '/api/v1/ingredients', {
@@ -252,7 +256,7 @@ server.addTool({
       .boolean()
       .optional()
       .describe('Whether the ingredient is seasonal'),
-    unit_id: z.string().optional().describe('Foreign key to unit'),
+    unit_id: z.string().describe('REQUIRED - Foreign key to unit'),
   }),
 });
 
@@ -424,7 +428,7 @@ server.addTool({
             .boolean()
             .optional()
             .describe('Whether the ingredient is seasonal'),
-          unit_id: z.string().optional().describe('Foreign key to unit'),
+          unit_id: z.string().describe('REQUIRED - Foreign key to unit'),
         }),
       )
       .max(50)
@@ -572,7 +576,7 @@ server.addTool({
             .optional()
             .describe('Whether ingredient is optional'),
           quantity: z.number().positive().describe('Quantity needed'),
-          unit_id: z.string().describe('Foreign key to unit'),
+          unit_id: z.string().describe('REQUIRED - Foreign key to unit'),
         }),
       )
       .optional()
@@ -682,7 +686,7 @@ server.addTool({
             .optional()
             .describe('Whether ingredient is optional'),
           quantity: z.number().positive().describe('Quantity needed'),
-          unit_id: z.string().describe('Foreign key to unit'),
+          unit_id: z.string().describe('REQUIRED - Foreign key to unit'),
         }),
       )
       .optional()
@@ -793,7 +797,7 @@ server.addTool({
                   .optional()
                   .describe('Whether ingredient is optional'),
                 quantity: z.number().positive().describe('Quantity needed'),
-                unit_id: z.string().describe('Foreign key to unit'),
+                unit_id: z.string().describe('REQUIRED - Foreign key to unit'),
               }),
             )
             .optional()
