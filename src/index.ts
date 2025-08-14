@@ -232,10 +232,7 @@ server.addTool({
       ])
       .optional()
       .describe('Ingredient category (legacy - use category_id instead)'),
-    category_id: z
-      .string()
-      .optional()
-      .describe('Foreign key to ingredient category'),
+    category_id: z.string().describe('Foreign key to ingredient category'),
     current_price: z
       .number()
       .positive()
