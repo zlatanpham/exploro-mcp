@@ -565,7 +565,7 @@ server.addTool({
       .describe('English description of the dish'),
     description_vi: z.string().describe('Vietnamese description of the dish'),
     difficulty: z.enum(['easy', 'medium', 'hard']).describe('Difficulty level'),
-    image_url: z.string().url().optional().describe('Image URL'),
+    image_url: z.string().url().describe('Image URL'),
     ingredients: z
       .array(
         z.object({
