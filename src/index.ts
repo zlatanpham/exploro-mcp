@@ -589,10 +589,10 @@ server.addTool({
     name_en: z.string().optional().describe('English name of the dish'),
     name_vi: z.string().describe('Vietnamese name of the dish'),
     prep_time: z.number().optional().describe('Preparation time in minutes'),
-    servings: z.number().positive().optional().describe('Number of servings'),
-    source_url: z.string().url().optional().describe('Recipe source URL'),
+    servings: z.number().positive().describe('Number of servings'),
+    source_url: z.string().url().describe('Recipe source URL'),
     status: z.enum(['active', 'inactive']).optional().describe('Dish status'),
-    tags: z.array(z.string()).optional().describe('Array of tag IDs'),
+    tags: z.array(z.string()).describe('Array of tag IDs'),
   }),
 });
 
