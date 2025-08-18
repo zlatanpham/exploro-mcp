@@ -478,8 +478,13 @@ server.addTool({
   parameters: z.object({
     count_unit_id: z.string().describe('Count unit ID (quả, chai, lon, etc.)'),
     ingredient_id: z.string().describe('ID of the ingredient'),
-    measurable_unit_id: z.string().describe('Measurable unit ID (g, kg, ml, l)'),
-    quantity: z.number().positive().describe('How many measurable units equal 1 count unit'),
+    measurable_unit_id: z
+      .string()
+      .describe('Measurable unit ID (g, kg, ml, l)'),
+    quantity: z
+      .number()
+      .positive()
+      .describe('How many measurable units equal 1 count unit'),
   }),
 });
 
@@ -501,7 +506,9 @@ server.addTool({
   },
   name: 'delete_ingredient_unit_mapping',
   parameters: z.object({
-    count_unit_id: z.string().describe('The count unit ID to remove mapping for'),
+    count_unit_id: z
+      .string()
+      .describe('The count unit ID to remove mapping for'),
     ingredient_id: z.string().describe('ID of the ingredient'),
   }),
 });

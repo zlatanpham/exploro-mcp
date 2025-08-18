@@ -1182,7 +1182,6 @@ The API includes a comprehensive unit system for ingredient measurements with su
 - **Breaking Change**: As of the latest version, `unit_id` is now mandatory for creating/updating ingredients and dish ingredients
 - **Benefits**: Automatic conversions, multilingual support, data consistency, and advanced recipe scaling
 
-
 ### Unit Categories
 
 #### Mass (Khối lượng)
