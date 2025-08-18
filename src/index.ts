@@ -433,9 +433,111 @@ server.addTool({
   }),
 });
 
+// 9. Get Ingredient Unit Mappings Tool
+server.addTool({
+  description: 'Get all unit mappings for a specific ingredient',
+  execute: async args => {
+    try {
+      const data = await exploroApiRequest(
+        'GET',
+        `/api/v1/ingredients/${args.ingredient_id}/unit-mappings`,
+      );
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'get_ingredient_unit_mappings',
+  parameters: z.object({
+    ingredient_id: z.string().describe('ID of the ingredient'),
+  }),
+});
+
+// 10. Create Ingredient Unit Mapping Tool
+server.addTool({
+  description: 'Create or update a unit mapping for an ingredient',
+  execute: async args => {
+    try {
+      const data = await exploroApiRequest(
+        'POST',
+        `/api/v1/ingredients/${args.ingredient_id}/unit-mappings`,
+        {
+          mapping: {
+            count_unit_id: args.count_unit_id,
+            measurable_unit_id: args.measurable_unit_id,
+            quantity: args.quantity,
+          },
+        },
+      );
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'create_ingredient_unit_mapping',
+  parameters: z.object({
+    count_unit_id: z.string().describe('Count unit ID (quả, chai, lon, etc.)'),
+    ingredient_id: z.string().describe('ID of the ingredient'),
+    measurable_unit_id: z.string().describe('Measurable unit ID (g, kg, ml, l)'),
+    quantity: z.number().positive().describe('How many measurable units equal 1 count unit'),
+  }),
+});
+
+// 11. Delete Ingredient Unit Mapping Tool
+server.addTool({
+  description: 'Delete a unit mapping for an ingredient',
+  execute: async args => {
+    try {
+      const data = await exploroApiRequest(
+        'DELETE',
+        `/api/v1/ingredients/${args.ingredient_id}/unit-mappings`,
+        undefined,
+        { count_unit_id: args.count_unit_id },
+      );
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'delete_ingredient_unit_mapping',
+  parameters: z.object({
+    count_unit_id: z.string().describe('The count unit ID to remove mapping for'),
+    ingredient_id: z.string().describe('ID of the ingredient'),
+  }),
+});
+
+// 12. Test Unit Conversion Tool
+server.addTool({
+  description: 'Test unit conversion with ingredient-specific mappings',
+  execute: async args => {
+    try {
+      const data = await exploroApiRequest(
+        'POST',
+        '/api/v1/ingredients/test-conversion',
+        {
+          from_unit_id: args.from_unit_id,
+          ingredient_id: args.ingredient_id,
+          quantity: args.quantity,
+          to_unit_id: args.to_unit_id,
+        },
+      );
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      return `Error: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  },
+  name: 'test_unit_conversion',
+  parameters: z.object({
+    from_unit_id: z.string().describe('Source unit ID'),
+    ingredient_id: z.string().describe('ID of the ingredient'),
+    quantity: z.number().positive().describe('Quantity to convert'),
+    to_unit_id: z.string().describe('Target unit ID'),
+  }),
+});
+
 // Dishes Management Tools
 
-// 9. Get Dish Categories Tool
+// 13. Get Dish Categories Tool
 server.addTool({
   description:
     'Get all dish category options including difficulty levels, status options, and meal groups',
@@ -464,7 +566,7 @@ server.addTool({
   }),
 });
 
-// 10. List Dishes Tool
+// 14. List Dishes Tool
 server.addTool({
   description: 'List all dishes with optional filtering and pagination',
   execute: async args => {
@@ -524,7 +626,7 @@ server.addTool({
   }),
 });
 
-// 11. Create Dish Tool
+// 15. Create Dish Tool
 server.addTool({
   description: 'Create a new dish with ingredient associations and tags',
   execute: async args => {
@@ -593,7 +695,7 @@ server.addTool({
   }),
 });
 
-// 12. Get Single Dish Tool
+// 16. Get Single Dish Tool
 server.addTool({
   description:
     'Get a single dish with full details including ingredients and tags',
@@ -611,7 +713,7 @@ server.addTool({
   }),
 });
 
-// 13. Update Dish Tool
+// 17. Update Dish Tool
 server.addTool({
   description: 'Update dish details with ingredient associations and tags',
   execute: async args => {
@@ -706,7 +808,7 @@ server.addTool({
   }),
 });
 
-// 14. Delete Dish Tool
+// 18. Delete Dish Tool
 server.addTool({
   description: 'Delete a dish (requires admin permission)',
   execute: async args => {
@@ -726,7 +828,7 @@ server.addTool({
   }),
 });
 
-// 15. Batch Create Dishes Tool
+// 19. Batch Create Dishes Tool
 server.addTool({
   description: 'Create up to 20 dishes in a single request',
   execute: async args => {
@@ -809,7 +911,7 @@ server.addTool({
 
 // Tags Management Tools
 
-// 16. Get Tag Categories Tool
+// 20. Get Tag Categories Tool
 server.addTool({
   description: 'Get all available tag categories for dish classification',
   execute: async () => {
@@ -824,7 +926,7 @@ server.addTool({
   parameters: z.object({}),
 });
 
-// 17. List Tags Tool
+// 21. List Tags Tool
 server.addTool({
   description: 'List all available tags with usage count',
   execute: async args => {
@@ -861,7 +963,7 @@ server.addTool({
   }),
 });
 
-// 18. Create Tag Tool
+// 22. Create Tag Tool
 server.addTool({
   description: 'Create a new tag',
   execute: async args => {
@@ -900,7 +1002,7 @@ server.addTool({
 
 // Menus Management Tools
 
-// 19. List Menus Tool
+// 23. List Menus Tool
 server.addTool({
   description: 'List menus with cost calculation and optional filtering',
   execute: async args => {
@@ -947,7 +1049,7 @@ server.addTool({
   }),
 });
 
-// 20. Create Menu Tool
+// 24. Create Menu Tool
 server.addTool({
   description: 'Create a new menu with dish associations',
   execute: async args => {
@@ -1013,7 +1115,7 @@ server.addTool({
   }),
 });
 
-// 21. Get Single Menu Tool
+// 25. Get Single Menu Tool
 server.addTool({
   description:
     'Get a single menu with full details including dishes and cost calculation',
